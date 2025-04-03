@@ -58,6 +58,11 @@ const commonChartOptions = {
                 display: true,
                 text: 'Input Value (x)',
                 color: chartColors.axisLabels
+            },
+            ticks: {
+                callback: function(value) {
+                    return parseFloat(value).toFixed(2); // Format x-axis ticks to 2 decimal places
+                }
             }
         },
         y: {
@@ -68,6 +73,11 @@ const commonChartOptions = {
                 display: true,
                 text: 'Output Value',
                 color: chartColors.axisLabels
+            },
+            ticks: {
+                callback: function(value) {
+                    return parseFloat(value).toFixed(2); // Format y-axis ticks to 2 decimal places
+                }
             }
         }
     }
@@ -88,7 +98,7 @@ function initializeCharts() {
                 data: [], // Will be set when data is available
                 backgroundColor: chartColors.output,
                 borderColor: chartColors.output,
-                borderWidth: 2,
+                borderWidth: 3, // Increased line thickness
                 pointRadius: 0,
                 tension: 0.3
             }]
@@ -117,7 +127,7 @@ function initializeCharts() {
                     data: [],
                     backgroundColor: chartColors.node0,
                     borderColor: chartColors.node0,
-                    borderWidth: 2,
+                    borderWidth: 3, // Increased line thickness
                     pointRadius: 0,
                     tension: 0.3
                 },
@@ -126,7 +136,7 @@ function initializeCharts() {
                     data: [],
                     backgroundColor: chartColors.node1,
                     borderColor: chartColors.node1,
-                    borderWidth: 2,
+                    borderWidth: 3, // Increased line thickness
                     pointRadius: 0,
                     tension: 0.3
                 },
@@ -135,7 +145,7 @@ function initializeCharts() {
                     data: [],
                     backgroundColor: chartColors.node2,
                     borderColor: chartColors.node2,
-                    borderWidth: 2,
+                    borderWidth: 3, // Increased line thickness
                     pointRadius: 0,
                     tension: 0.3
                 }
@@ -195,7 +205,7 @@ function initializeCharts() {
                 ...commonChartOptions.plugins,
                 title: {
                     display: true,
-                    text: 'Hidden Layer 1 (After ReLU)'
+                    text: 'Hidden Layer 1 (After ReLU Activation)'
                 }
             }
         }
@@ -291,7 +301,7 @@ function initializeCharts() {
                 ...commonChartOptions.plugins,
                 title: {
                     display: true,
-                    text: 'Hidden Layer 2 (After ReLU)'
+                    text: 'Hidden Layer 2 (After ReLU Activation)'
                 }
             }
         }
@@ -315,34 +325,43 @@ function updateCharts(results) {
 
     // Update output chart
     outputChart.data.labels = xValues;
-    outputChart.data.datasets[0].data = results.outputs;
+    // Format output values to 2 decimal places as requested
+    outputChart.data.datasets[0].data = results.outputs.map(val => parseFloat(val.toFixed(2)));
     outputChart.update();
 
     // Update hidden layer 1 (pre-activation) chart
     hidden1PreChart.data.labels = xValues;
     for (let i = 0; i < 3; i++) {
-        hidden1PreChart.data.datasets[i].data = xValues.map((_, idx) => results.hidden1_pre[idx][i]);
+        // Format values to 2 decimal places
+        hidden1PreChart.data.datasets[i].data = xValues.map((_, idx) =>
+            parseFloat(results.hidden1_pre[idx][i].toFixed(2)));
     }
     hidden1PreChart.update();
 
     // Update hidden layer 1 (post-activation) chart
     hidden1PostChart.data.labels = xValues;
     for (let i = 0; i < 3; i++) {
-        hidden1PostChart.data.datasets[i].data = xValues.map((_, idx) => results.hidden1_post[idx][i]);
+        // Format values to 2 decimal places
+        hidden1PostChart.data.datasets[i].data = xValues.map((_, idx) =>
+            parseFloat(results.hidden1_post[idx][i].toFixed(2)));
     }
     hidden1PostChart.update();
 
     // Update hidden layer 2 (pre-activation) chart
     hidden2PreChart.data.labels = xValues;
     for (let i = 0; i < 3; i++) {
-        hidden2PreChart.data.datasets[i].data = xValues.map((_, idx) => results.hidden2_pre[idx][i]);
+        // Format values to 2 decimal places
+        hidden2PreChart.data.datasets[i].data = xValues.map((_, idx) =>
+            parseFloat(results.hidden2_pre[idx][i].toFixed(2)));
     }
     hidden2PreChart.update();
 
     // Update hidden layer 2 (post-activation) chart
     hidden2PostChart.data.labels = xValues;
     for (let i = 0; i < 3; i++) {
-        hidden2PostChart.data.datasets[i].data = xValues.map((_, idx) => results.hidden2_post[idx][i]);
+        // Format values to 2 decimal places
+        hidden2PostChart.data.datasets[i].data = xValues.map((_, idx) =>
+            parseFloat(results.hidden2_post[idx][i].toFixed(2)));
     }
     hidden2PostChart.update();
 

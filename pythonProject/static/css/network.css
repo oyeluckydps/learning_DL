@@ -1,13 +1,13 @@
 /* CSS for the neural network visualization */
 
 #network-visualization {
-    /* Using a minimum height ensures the visualization has enough space */
-    min-height: 300px;
+    /* Increased the minimum height for better visualization */
+    min-height: 400px;
 }
 
 #nn-container {
     width: 100%;
-    height: 250px;
+    height: 350px;
     position: relative;
     overflow: hidden;
     /* Using flex to center the SVG */

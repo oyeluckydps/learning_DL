@@ -32,10 +32,10 @@
     color: #2c3e50;
 }
 
-/* Make sure charts have enough space */
+/* Make sure charts have enough space - Increased height as requested */
 canvas {
     width: 100% !important;
-    height: 250px !important;
+    height: 350px !important;
 }
 
 /* Tooltip styling for chart interactions */

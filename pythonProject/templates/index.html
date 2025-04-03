@@ -24,6 +24,17 @@
         <!-- Section 2: Controls for weights and biases -->
         <section id="nn-controls">
             <h2>Network Parameters</h2>
+
+            <!-- Input Value Slider -->
+            <div class="input-control-wrapper">
+                <h3>Input Value</h3>
+                <div class="slider-container">
+                    <span class="slider-label">Input (x)</span>
+                    <input type="range" id="input-value-slider" min="-5" max="5" step="0.1" value="1">
+                    <span class="slider-value" id="input-value-display">1.00</span>
+                </div>
+            </div>
+
             <div class="controls-container">
                 <div class="weight-controls">
                     <h3>Weights</h3>
@@ -55,6 +66,15 @@
                         <h4>Output Bias</h4>
                         <!-- Slider for b3 will be dynamically generated -->
                     </div>
+                </div>
+            </div>
+
+            <!-- Output Value Display -->
+            <div class="output-display-wrapper">
+                <h3>Current Output</h3>
+                <div class="output-display">
+                    <span class="output-label">Output (y) = </span>
+                    <span class="output-value" id="output-value-display">0.00</span>
                 </div>
             </div>
         </section>

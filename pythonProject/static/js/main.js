@@ -12,6 +12,9 @@ let currentBiases = JSON.parse(JSON.stringify(initialBiases));
 // Global state to store network computation results
 let networkResults = null;
 
+// Global state to store the current input value
+let currentInputValue = 1.0;
+
 // Wait for the DOM to be loaded before initializing the application
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Neural Network Explorer Initializing...');
@@ -24,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the output charts (without data initially)
     initializeCharts();
+
+    // Initialize input slider
+    initializeInputSlider();
 
     // Compute initial network output and update visualizations
     computeAndUpdateVisualizations();
@@ -45,7 +51,7 @@ function computeAndUpdateVisualizations() {
         biases: currentBiases
     };
 
-    // Send data to server to compute network outputs
+    // Send data to server to compute network outputs using ReLU activation
     fetch('/compute', {
         method: 'POST',
         headers: {
@@ -63,6 +69,9 @@ function computeAndUpdateVisualizations() {
 
         // Update all charts with new data
         updateCharts(results);
+
+        // Update output display
+        updateOutputDisplay();
 
         console.log('Network computation and visualization updated');
     })
@@ -103,6 +112,54 @@ function resetNetwork() {
     computeAndUpdateVisualizations();
 
     console.log('Network reset to initial values');
+}
+
+/**
+ * Initializes the input value slider
+ */
+function initializeInputSlider() {
+    const inputSlider = document.getElementById('input-value-slider');
+    const inputDisplay = document.getElementById('input-value-display');
+
+    // Set initial value
+    inputSlider.value = currentInputValue;
+    inputDisplay.textContent = currentInputValue.toFixed(2);
+
+    // Add event listener for changes
+    inputSlider.addEventListener('input', function() {
+        currentInputValue = parseFloat(this.value);
+        inputDisplay.textContent = currentInputValue.toFixed(2);
+
+        // Update output display based on current input
+        updateOutputDisplay();
+    });
+}
+
+/**
+ * Updates the output display based on current input value
+ */
+function updateOutputDisplay() {
+    // If we have network results, find the closest input value and display corresponding output
+    if (networkResults) {
+        const xValues = networkResults.x_values;
+        const outputs = networkResults.outputs;
+
+        // Find closest x value to current input
+        let closestIndex = 0;
+        let minDiff = Math.abs(xValues[0] - currentInputValue);
+
+        for (let i = 1; i < xValues.length; i++) {
+            const diff = Math.abs(xValues[i] - currentInputValue);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = i;
+            }
+        }
+
+        // Update output display
+        const outputDisplay = document.getElementById('output-value-display');
+        outputDisplay.textContent = outputs[closestIndex].toFixed(2);
+    }
 }
 
 /**

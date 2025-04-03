@@ -88,6 +88,20 @@ function updateNetworkVisualization(weights, biases) {
         .attr('y', networkConfig.margin.top - 10)
         .text(d => d);
 
+    // Add ReLU activation labels for hidden layers
+    const reluLabels = ['', 'ReLU', 'ReLU', ''];
+    networkSvg.selectAll('.relu-label')
+        .data(reluLabels.filter(d => d !== ''))
+        .enter()
+        .append('text')
+        .attr('class', 'relu-label')
+        .attr('x', (d, i) => layerX[i + 1])
+        .attr('y', networkConfig.margin.top + 10)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '12px')
+        .attr('fill', '#f39c12')
+        .text(d => d);
+
     // Create node objects with positions
     let nodeId = 0;
     for (let layer = 0; layer < layers.length; layer++) {
@@ -161,7 +175,7 @@ function updateNetworkVisualization(weights, biases) {
         .on('mouseover', function(event, d) {
             // Show weight value on hover
             const tooltip = d3.select('.weight-tooltip');
-            tooltip.html(`Weight: ${d.weight.toFixed(3)}`)
+            tooltip.html(`Weight: ${d.weight.toFixed(2)}`) // Changed to 2 decimal places
                 .style('display', 'block')
                 .style('left', `${event.pageX + 10}px`)
                 .style('top', `${event.pageY - 30}px`);
@@ -170,28 +184,20 @@ function updateNetworkVisualization(weights, biases) {
             d3.select('.weight-tooltip').style('display', 'none');
         });
 
-    // Draw ReLU activation indicators
-    // Draw semicircles for hidden layers to represent ReLU activation
-    for (let layer = 1; layer < layers.length - 1; layer++) {
-        for (let node = 0; node < layers[layer]; node++) {
-            const nodeIndex = nodes.findIndex(n => n.layer === layer && n.index === node);
-            const x = nodes[nodeIndex].x;
-            const y = nodes[nodeIndex].y;
-            const size = networkConfig.nodeRadius * 1.5;
+    // Add weight labels on the connections
+    networkSvg.selectAll('.weight-label')
+        .data(connections)
+        .enter()
+        .append('text')
+        .attr('class', 'weight-label')
+        .attr('x', d => (d.source.x + d.target.x) / 2)
+        .attr('y', d => (d.source.y + d.target.y) / 2 - 5)
+        .text(d => d.weight.toFixed(2))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '10px')
+        .attr('fill', d => d.weight >= 0 ? '#3498db' : '#e74c3c');
 
-            // Draw a dashed arc to represent ReLU activation
-            const arc = d3.arc()
-                .innerRadius(size - 2)
-                .outerRadius(size)
-                .startAngle(-Math.PI / 2)
-                .endAngle(Math.PI / 2);
-
-            networkSvg.append('path')
-                .attr('d', arc)
-                .attr('class', 'relu-indicator')
-                .attr('transform', `translate(${x + networkConfig.nodeRadius * 2}, ${y})`);
-        }
-    }
+    // Removed ReLU activation indicators (arcs) as requested
 
     // Draw nodes
     networkSvg.selectAll('.node')
@@ -209,15 +215,19 @@ function updateNetworkVisualization(weights, biases) {
 
             if (d.layer === 0) {
                 tooltipText = "Input Node";
+                // For input node, we could show the current input value if available
+                tooltipText += "<br>Input: x";
             } else if (d.layer === layers.length - 1) {
                 tooltipText = "Output Node";
                 // Show bias if output node
-                tooltipText += `<br>Bias: ${biases.b3[0].toFixed(3)}`;
+                tooltipText += `<br>Bias: ${biases.b3[0].toFixed(2)}`;
+                // Show output value if available
+                tooltipText += "<br>Output: y";
             } else {
                 // For hidden nodes, show bias value
                 const biasKey = `b${d.layer}`;
                 tooltipText = `Hidden Node (${d.layer},${d.index})`;
-                tooltipText += `<br>Bias: ${biases[biasKey][d.index].toFixed(3)}`;
+                tooltipText += `<br>Bias: ${biases[biasKey][d.index].toFixed(2)}`;
             }
 
             const tooltip = d3.select('.weight-tooltip');
@@ -243,6 +253,23 @@ function updateNetworkVisualization(weights, biases) {
             if (d.layer === 0) return "x";
             if (d.layer === layers.length - 1) return "y";
             return d.index + 1;
+        });
+
+    // Add bias labels
+    networkSvg.selectAll('.bias-label')
+        .data(nodes.filter(d => d.layer > 0)) // Only for hidden and output nodes
+        .enter()
+        .append('text')
+        .attr('class', 'bias-label')
+        .attr('x', d => d.x)
+        .attr('y', d => d.y + networkConfig.nodeRadius + 15)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '10px')
+        .attr('fill', '#7f8c8d')
+        .text(d => {
+            const biasKey = `b${d.layer}`;
+            const biasValue = biases[biasKey][d.index];
+            return `b: ${biasValue.toFixed(2)}`;
         });
 
     console.log('Network visualization updated');
