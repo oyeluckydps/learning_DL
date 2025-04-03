@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network Explorer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/network.css">
+    <link rel="stylesheet" href="/static/css/controls.css">
+    <link rel="stylesheet" href="/static/css/charts.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Neural Network Explorer</h1>
+
+        <!-- Section 1: Network Visualization -->
+        <section id="network-visualization">
+            <h2>Network Structure</h2>
+            <div id="nn-container"></div>
+        </section>
+
+        <!-- Section 2: Controls for weights and biases -->
+        <section id="nn-controls">
+            <h2>Network Parameters</h2>
+            <div class="controls-container">
+                <div class="weight-controls">
+                    <h3>Weights</h3>
+                    <div id="w1-sliders" class="slider-group">
+                        <h4>Layer 1 Weights</h4>
+                        <!-- Sliders for w1 will be dynamically generated -->
+                    </div>
+                    <div id="w2-sliders" class="slider-group">
+                        <h4>Layer 2 Weights</h4>
+                        <!-- Sliders for w2 will be dynamically generated -->
+                    </div>
+                    <div id="w3-sliders" class="slider-group">
+                        <h4>Output Weights</h4>
+                        <!-- Sliders for w3 will be dynamically generated -->
+                    </div>
+                </div>
+
+                <div class="bias-controls">
+                    <h3>Biases</h3>
+                    <div id="b1-sliders" class="slider-group">
+                        <h4>Layer 1 Biases</h4>
+                        <!-- Sliders for b1 will be dynamically generated -->
+                    </div>
+                    <div id="b2-sliders" class="slider-group">
+                        <h4>Layer 2 Biases</h4>
+                        <!-- Sliders for b2 will be dynamically generated -->
+                    </div>
+                    <div id="b3-sliders" class="slider-group">
+                        <h4>Output Bias</h4>
+                        <!-- Slider for b3 will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Charts/Graphs for visualizing outputs -->
+        <section id="nn-charts">
+            <h2>Network Outputs</h2>
+            <div class="charts-container">
+                <div class="chart-wrapper">
+                    <h3>Input-Output Function</h3>
+                    <canvas id="output-chart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Hidden Layer 1 (Pre-Activation)</h3>
+                    <canvas id="hidden1-pre-chart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Hidden Layer 1 (Post-Activation)</h3>
+                    <canvas id="hidden1-post-chart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Hidden Layer 2 (Pre-Activation)</h3>
+                    <canvas id="hidden2-pre-chart"></canvas>
+                </div>
+
+                <div class="chart-wrapper">
+                    <h3>Hidden Layer 2 (Post-Activation)</h3>
+                    <canvas id="hidden2-post-chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pass the initial weights and biases to JavaScript -->
+    <script>
+        const initialWeights = {{ weights|tojson }};
+        const initialBiases = {{ biases|tojson }};
+    </script>
+
+    <!-- Load our JavaScript files -->
+    <script src="/static/js/network.js"></script>
+    <script src="/static/js/controls.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

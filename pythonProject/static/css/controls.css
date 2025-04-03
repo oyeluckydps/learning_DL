@@ -1,0 +1,131 @@
+/* CSS for the neural network controls section */
+
+#nn-controls {
+    /* Ensure there's enough space for all the sliders */
+    min-height: 400px;
+}
+
+.controls-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .controls-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.weight-controls,
+.bias-controls {
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.slider-group {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for individual slider containers */
+.slider-container {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* Slider label */
+.slider-label {
+    width: 120px;
+    font-size: 14px;
+    color: #34495e;
+}
+
+/* Styling the range input */
+input[type="range"] {
+    flex-grow: 1;
+    height: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: #dfe6e9;
+    outline: none;
+    border-radius: 5px;
+}
+
+/* Chrome, Opera, Safari */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #3498db;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #2980b9;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #3498db;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #2980b9;
+}
+
+/* Styling for the value display */
+.slider-value {
+    width: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #2c3e50;
+    background: #ecf0f1;
+    padding: 5px;
+    margin-left: 10px;
+    border-radius: 3px;
+}
+
+/* Reset button styling */
+.reset-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+    background-color: #c0392b;
+}
+
+/* Random button styling */
+.random-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #9b59b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.random-button:hover {
+    background-color: #8e44ad;
+}
